@@ -388,28 +388,95 @@
       <form id="submit-form" action="" class="php-email-form mt-4">
         <div class="row">
           <div class="col-md-6 form-group">
-            <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+            <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" onkeyup="validateName()">
+            <span id="name-error"></span>
           </div>
           <div class="col-md-6 form-group mt-3 mt-md-0">
-            <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+            <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" onkeyup="validateEmail()">
+            <span id="email-error"></span>
           </div>
         </div>
         <div class="form-group mt-3">
-          <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
-        </div>
-        <div class="form-group mt-3">
-          <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+          <textarea class="form-control" name="message" rows="5" placeholder="Message" id="contact-message" onkeyup="validateMessage()"></textarea>
+          <span id="message-error"></span>
         </div>
         <div class="my-3">
           <div class="loading">Loading</div>
           <!-- <div class="error-message"></div> -->
           <div class="sent-message">Your message has been sent. Thank you!</div>
         </div>
-        <div class="text-center"><button type="submit">Send Message</button></div>
+        <div class="text-center"><button type="submit" onclick="return validateForm()">Send Message</button></div>
       </form>
 
-    </div>
+    </div>  
   </section><!-- End Contact Section -->
+
+
+  <script>
+
+    var nameError = document.getElementById('name-error');
+    var emailError = document.getElementById('email-error');
+    var messageError = document.getElementById('message-error');
+    var submitError = document.getElementById('submit-error');
+    
+    function validateName()
+    {
+        var name = document.getElementById('name').value;
+        if(name.length ==0)
+        {
+            nameError.innerHTML ='name is required'
+            return false;
+        }
+        if(!name.match(/^[A-Za-z]+( [A-Za-z]+){1,2}$/)){
+            nameError.innerHTML ='write your full name';
+            return false;
+            
+        }
+        nameError.innerHTML = '<i class="uil uil-check-circle"></i>';
+        return true;
+    }
+    function validateEmail()
+    {
+        var email = document.getElementById('email').value;
+        if(email.length==0)
+        {
+            emailError.innerHTML ='email is required'
+            return false;
+        }
+        if(!email.match(/^[A-Za-z\._\-[0-9]+@[A-Za-z]+\.[a-z]{2,}$/))
+        {
+            emailError.innerHTML ='Email is invalid'
+            return false;
+        }
+        emailError.innerHTML = '<i class="uil uil-check-circle"></i>';
+        return true;
+    }
+    function validateMessage()
+    {
+        var message = document.getElementById('contact-message').value;
+        var required =25;
+        var left = required - message.length;
+        if(left>0)
+        {
+            messageError.innerHTML = left +'more characters required';
+            return false;
+        }
+    
+        messageError.innerHTML= '<i class="uil uil-check-circle"></i>';
+        return true;
+    }
+    function validateForm()
+    {
+        if(!validateName() || !validateEmail() || !validateMessage())
+        {
+            submitError.style.display ='block';
+            submitError.innerHTML = 'please fill the all field';
+            setTimeout(function(){submitError.style.display ='none';}, 3000);
+            return false;
+          
+        }
+    }
+    </script>
 
   <div class="credits">
   </div>
@@ -422,6 +489,7 @@
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
