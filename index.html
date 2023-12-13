@@ -405,7 +405,12 @@
           <!-- <div class="error-message"></div> -->
           <div class="sent-message">Your message has been sent. Thank you!</div>
         </div>
-        <div class="text-center"><button type="submit" onclick="return validateForm()">Send Message</button></div>
+        <div class="clearfix"></div>
+           <div class="col-lg-12 text-center">
+              <div id="success"></div>
+              <button id="sendMessageButton" class="sim-btn btn-hover-new" data-text="Send Message" type="submit" onclick="return validateForm()">Send Message</button>
+            <span id="submit-error"></span>
+        </div>
       </form>
 
     </div>  
@@ -416,7 +421,9 @@
 
     var nameError = document.getElementById('name-error');
     var emailError = document.getElementById('email-error');
+    var phoneError = document.getElementById('phone-error');
     var messageError = document.getElementById('message-error');
+    var messageSuccess = document.getElementById('message-success');
     var submitError = document.getElementById('submit-error');
     
     function validateName()
@@ -424,15 +431,15 @@
         var name = document.getElementById('name').value;
         if(name.length ==0)
         {
-            nameError.innerHTML ='name is required'
+            nameError.innerHTML ='<p class="help-block text-danger">name is required</p>';
             return false;
         }
-        if(!name.match(/^[A-Za-z]+( [A-Za-z]+)/)){
-            nameError.innerHTML ='write your full name';
+        if(!name.match(/^[A-Za-z]+( [A-Za-z]+){1,2}$/)){
+            nameError.innerHTML ='<p class="help-block text-danger">write your full name</p>';
             return false;
             
         }
-        nameError.innerHTML = '<i class="uil uil-check-circle"></i>';
+        nameError.innerHTML = '<p class="help-block text-success"><i class="bi bi-check-circle-fill"></i></p>';
         return true;
     }
     function validateEmail()
@@ -440,15 +447,31 @@
         var email = document.getElementById('email').value;
         if(email.length==0)
         {
-            emailError.innerHTML ='email is required'
+            emailError.innerHTML ='<p class="help-block text-danger">email is required</p>';
             return false;
         }
         if(!email.match(/^[A-Za-z\._\-[0-9]+@[A-Za-z]+\.[a-z]{2,}$/))
         {
-            emailError.innerHTML ='Email is invalid'
+            emailError.innerHTML ='<p class="help-block text-danger">email is invalid</p>';
             return false;
         }
-        emailError.innerHTML = '<i class="uil uil-check-circle"></i>';
+        emailError.innerHTML = '<p class="help-block text-success"><i class="bi bi-check-circle-fill"></i></p>';
+        return true;
+    }
+    function validatePhone()
+    {
+        var phone = document.getElementById('phone').value;
+        if(phone.length==0)
+        {
+            phoneError.innerHTML ='<p class="help-block text-danger">number is required</p>';
+            return false;
+        }
+        if(!phone.match(/^[0-9]{10,12}$/))
+        {
+            phoneError.innerHTML ='<p class="help-block text-danger">invalid phone number</p>';
+            return false;
+        }
+        phoneError.innerHTML = '<p class="help-block text-success"><i class="bi bi-check-circle-fill"></i></p>';
         return true;
     }
     function validateMessage()
@@ -463,13 +486,14 @@
         }
     
         messageError.innerHTML= '<i class="uil uil-check-circle"></i>';
-        return true;
-    }
+        return true;
+    }
     function validateForm()
     {
         if(!validateName() || !validateEmail() || !validateMessage())
         {
             submitError.style.display ='block';
+            submitError.style.color ='red';
             submitError.innerHTML = 'please fill the all field';
             setTimeout(function(){submitError.style.display ='none';}, 3000);
             return false;
@@ -477,7 +501,6 @@
         }
     }
     </script>
-
   <div class="credits">
   </div>
 
